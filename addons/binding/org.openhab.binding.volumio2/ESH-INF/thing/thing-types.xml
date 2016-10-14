@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="volumio2"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
+        xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+
+    <!-- Sample Thing Type -->
+    <thing-type id="volumio2_device">
+        <label>Volumio 2 Host</label>
+        <description>A Volumio 2 Host</description>
+
+        <channels>
+            <channel id="title" typeId="title"/>
+            <channel id="artist" typeId="artist"/>
+            <channel id="album" typeId="album"/>
+            <channel id="volume" typeId="volume"/>
+            <channel id="player" typeId="player"/>
+            <channel id="albumArt" typeId="albumArt"/>
+            <channel id="trackType" typeId="trackType"/>
+            <channel id="position" typeId="position"/>
+            <channel id="playFav1" typeId="playFav1"/>
+            <channel id="reboot" typeId="reboot"/>
+            <channel id="shutdown" typeId="shutdown"/>
+            <channel id="playFavorite" typeId="playFavorite"/>
+            <channel id="playPlaylist" typeId="playPlaylist"/>
+            <channel id="playRadioFavourite" typeId="playRadioFavourite"/>
+        </channels>
+        
+        <config-description>
+            <parameter name="hostname" type="text" required="true">
+                <label>Hostname</label>
+                <description>The hostname of your volumio2 device</description>
+            </parameter>
+        </config-description>
+    </thing-type>
+
+    <channel-type id="title">
+        <item-type>String</item-type>
+        <label>Title</label>
+        <description>Current played title</description>
+        <state readOnly="true"/>
+    </channel-type>
+    
+    <channel-type id="artist">
+        <item-type>String</item-type>
+        <label>Artist</label>
+        <description>Current played artist</description>
+        <state readOnly="true"/>
+    </channel-type>
+    
+    <channel-type id="album">
+        <item-type>String</item-type>
+        <label>Album</label>
+        <description>Current play Album</description>
+        <state readOnly="true"/>
+    </channel-type>
+    
+    <channel-type id="volume">
+        <item-type>Dimmer</item-type>
+        <label>Volume</label>
+        <description>Current volume</description>
+        <category>SoundVolume</category>
+    </channel-type>
+    
+    <channel-type id="player">
+        <item-type>Player</item-type>
+        <label>Player</label>
+        <description>Player</description>
+        <category>Player</category>
+    </channel-type>
+
+    <channel-type id="albumArt" advanced="true">
+        <item-type>Image</item-type>
+        <label>Album Art</label>
+        <description>Album Art</description>
+        <state readOnly="true"/>
+    </channel-type>
+    
+    <channel-type id="trackType" advanced="true">
+        <item-type>String</item-type>
+        <label>trackType</label>
+        <description>trackType</description>
+        <state readOnly="true"/>
+    </channel-type>
+
+    <channel-type id="position" advanced="true">
+        <item-type>String</item-type>
+        <label>position</label>
+        <description>position</description>
+    </channel-type>
+    
+    <channel-type id="playFav1" advanced="true">
+        <item-type>Switch</item-type>
+        <label>PlayFav1</label>
+    </channel-type>
+   
+    <channel-type id="reboot" advanced="true">
+        <item-type>Switch</item-type>
+        <label>Reboot</label>
+        <category>Switch</category>
+    </channel-type>
+
+    <channel-type id="shutdown" advanced="true">
+        <item-type>Switch</item-type>
+        <label>Shutdown</label>
+        <category>Switch</category>
+    </channel-type>
+    
+    <channel-type id="playFavorite" advanced="true">
+        <item-type>String</item-type>
+        <label>Favorite</label>
+        <description>Play the given favorite entry.</description>
+    </channel-type>
+    
+    <channel-type id="playRadioFavourite" advanced="true">
+        <item-type>String</item-type>
+        <label>Radio Favorite</label>
+        <description>Play the given radio favorite entry.</description>
+    </channel-type>
+
+    <channel-type id="playPlaylist" advanced="true">
+        <item-type>String</item-type>
+        <label>Playlist</label>
+    </channel-type>
+
+</thing:thing-descriptions>
