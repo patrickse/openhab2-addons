@@ -2,9 +2,12 @@ package org.openhab.binding.volumio2.internal;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.openhab.binding.volumio2.internal.mapping.VolumioServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +50,23 @@ public class Volumio2Service {
     }
 
     public void connect() {
-        socket.connect();
+
+        try {
+
+            final BlockingQueue<Object> values = new LinkedBlockingQueue<Object>();
+            socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+                @Override
+                public void call(Object... objects) {
+                    values.offer("done");
+                }
+            });
+
+            socket.connect();
+            values.take();
+
+        } catch (InterruptedException ie) {
+            logger.error("Timeout during connection");
+        }
     }
 
     public void disconnect() {
@@ -68,6 +87,34 @@ public class Volumio2Service {
 
     public void pause() {
         socket.emit(VolumioServices.PAUSE);
+    }
+
+    public void play(Integer index) {
+
+        logger.debug("socket.emit({})", VolumioServices.PLAY_RADIO_FAVOURITES);
+
+        try {
+
+            final BlockingQueue<Object> values = new LinkedBlockingQueue<Object>();
+            socket.once("pushState", new Emitter.Listener() {
+
+                @Override
+                public void call(Object... arg0) {
+                    System.out.println("Command executed");
+                    values.offer("done");
+                }
+
+            });
+            socket.emit(VolumioServices.PLAY, index);
+
+            System.out.println("Emit");
+            values.take();
+            System.out.println("Finsihed");
+
+        } catch (InterruptedException ie) {
+            logger.error("Timeout during connection");
+        }
+
     }
 
     public void next() {
@@ -115,9 +162,30 @@ public class Volumio2Service {
         }
     }
 
-    public void playRadioFavourites(String radioFavouriteName) {
-        logger.debug("socket.emit({}, {})", VolumioServices.PLAY_RADIO_FAVOURITES, radioFavouriteName);
-        socket.emit(VolumioServices.PLAY_RADIO_FAVOURITES, radioFavouriteName);
+    public void playRadioFavourites() {
+        logger.debug("socket.emit({})", VolumioServices.PLAY_RADIO_FAVOURITES);
+
+        try {
+
+            final BlockingQueue<Object> values = new LinkedBlockingQueue<Object>();
+            socket.once("pushPlayRadioFavourites", new Emitter.Listener() {
+
+                @Override
+                public void call(Object... arg0) {
+                    System.out.println("Command executed");
+                    values.offer("done");
+                }
+
+            });
+            socket.emit(VolumioServices.PLAY_RADIO_FAVOURITES);
+            System.out.println("Emit");
+            values.take();
+            System.out.println("Finsihed");
+
+        } catch (InterruptedException ie) {
+            logger.error("Timeout during connection");
+        }
+
     }
 
     public void addPlay(String uri, String title, String serviceType) {

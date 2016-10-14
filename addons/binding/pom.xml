@@ -55,6 +55,10 @@
     <module>org.openhab.binding.urtsi</module>
     <module>org.openhab.binding.vitotronic</module>
     <module>org.openhab.binding.yamahareceiver</module>
+    <module>org.openhab.binding.volumio.test</module>
+    <module>org.eclipse.smarthome.binding.volumio2.test</module>
+    <module>org.openhab.binding..test</module>
+    <module>org.openhab.binding.volumio2.test</module>
   </modules>
 
 </project>

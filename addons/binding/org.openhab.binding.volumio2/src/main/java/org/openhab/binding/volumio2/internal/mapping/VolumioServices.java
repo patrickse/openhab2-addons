@@ -1,4 +1,4 @@
-package org.openhab.binding.volumio2.internal;
+package org.openhab.binding.volumio2.internal.mapping;
 
 /**
  * @see https://github.com/volumio/Volumio2-UI/blob/master/src/app/services/player.service.js
