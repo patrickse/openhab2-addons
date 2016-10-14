@@ -85,15 +85,6 @@ public class volumio2Handler extends BaseThingHandler implements DiscoveryListen
                     playPlaylist(command);
                     break;
 
-                case CHANNEL_FAVORITE:
-                    playFavorite(command);
-                    break;
-
-                case CHANNEL_RADIO_FAVOURITE:
-                    logger.info("BUMS");
-                    playRadioFavourite(command);
-                    break;
-
                 default:
                     logger.error("Unknown channel: {}", channelUID.getId());
             }
@@ -110,21 +101,6 @@ public class volumio2Handler extends BaseThingHandler implements DiscoveryListen
         if (command instanceof StringType) {
             String playlistName = command.toString();
             volumio.playPlaylist(playlistName);
-        }
-    }
-
-    private void playRadioFavourite(Command command) {
-        logger.info("playRadioFavourite");
-        if (command instanceof StringType) {
-            String radioFavouriteName = command.toString();
-            volumio.playRadioFavourites(radioFavouriteName);
-        }
-    }
-
-    private void playFavorite(Command command) {
-        if (command instanceof StringType) {
-            String favoriteName = command.toString();
-            volumio.playFavorites(favoriteName);
         }
     }
 
@@ -159,8 +135,6 @@ public class volumio2Handler extends BaseThingHandler implements DiscoveryListen
     public void initialize() {
 
         config = getConfigAs(VolumioConfig.class);
-
-        logger.debug("VolumioConfig: {}", config);
 
         try {
             volumio = new Volumio2Service(config.getHostname());
@@ -249,19 +223,18 @@ public class volumio2Handler extends BaseThingHandler implements DiscoveryListen
 
     @Override
     public void thingDiscovered(DiscoveryService source, DiscoveryResult result) {
-        logger.info("FOUND A THING");
+
     }
 
     @Override
     public void thingRemoved(DiscoveryService source, ThingUID thingUID) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public Collection<ThingUID> removeOlderResults(DiscoveryService source, long timestamp,
             Collection<ThingTypeUID> thingTypeUIDs) {
-        // TODO Auto-generated method stub
+
         return null;
     }
 }
