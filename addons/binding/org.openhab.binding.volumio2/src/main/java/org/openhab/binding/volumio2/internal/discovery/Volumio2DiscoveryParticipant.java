@@ -20,7 +20,6 @@ public class Volumio2DiscoveryParticipant implements MDNSDiscoveryParticipant {
 
     private static final Logger logger = LoggerFactory.getLogger(Volumio2DiscoveryParticipant.class);
 
-    // private static final String SERVICE_TYPE = "_fbx-api._tcp.local.";
     private static final String SERVICE_TYPE = "_Volumio._tcp.local.";
 
     @Override

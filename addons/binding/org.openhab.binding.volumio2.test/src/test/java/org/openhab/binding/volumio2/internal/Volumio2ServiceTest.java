@@ -30,8 +30,7 @@ public class Volumio2ServiceTest {
     @Test
     public void playRadioStation() {
         System.out.println("Start");
-        service.playRadioFavourites();
-        service.play(1);
+        service.playRadioFavourite(1);
         System.out.println("Stop");
     }
 
