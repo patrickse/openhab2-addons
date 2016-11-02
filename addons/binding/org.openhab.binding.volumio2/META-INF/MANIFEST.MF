@@ -25,3 +25,4 @@ Import-Package:
 Service-Component: OSGI-INF/*.xml
 Export-Package: org.openhab.binding.volumio2,
  org.openhab.binding.volumio2.handler
+Bundle-ActivationPolicy: lazy

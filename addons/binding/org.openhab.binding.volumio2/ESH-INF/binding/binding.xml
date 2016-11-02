@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://eclipse.org/smarthome/schemas/binding/v1.0.0 http://eclipse.org/smarthome/schemas/binding-1.0.0.xsd">
 
     <name>Volumio2 Binding</name>
-    <description>This is the binding for volumio2.</description>
+    <description>This is the binding for Volumio2 devices</description>
     <author>Patrick Sernetz</author>
 
 </binding:binding>

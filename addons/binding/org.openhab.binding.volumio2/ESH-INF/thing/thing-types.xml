@@ -32,6 +32,7 @@
                 <description>The hostname of your volumio2 device</description>
             </parameter>
         </config-description>
+        
     </thing-type>
 
     <channel-type id="title">

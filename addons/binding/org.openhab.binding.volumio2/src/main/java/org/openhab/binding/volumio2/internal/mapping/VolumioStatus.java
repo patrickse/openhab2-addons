@@ -1,4 +1,4 @@
-package org.openhab.binding.volumio2.internal;
+package org.openhab.binding.volumio2.internal.mapping;
 
 public class VolumioStatus {
 

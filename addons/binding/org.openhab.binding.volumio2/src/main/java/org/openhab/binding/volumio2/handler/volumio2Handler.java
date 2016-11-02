@@ -31,9 +31,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.openhab.binding.volumio2.volumio2BindingConstants;
 import org.openhab.binding.volumio2.internal.Volumio2Service;
-import org.openhab.binding.volumio2.internal.config.VolumioConfig;
+import org.openhab.binding.volumio2.internal.config.Volumio2Config;
 import org.openhab.binding.volumio2.internal.json.VolumioJsonObject;
-import org.openhab.binding.volumio2.internal.mapping.VolumioPlayerStatus;
+import org.openhab.binding.volumio2.internal.mapping.Volumio2PlayerStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +49,7 @@ import io.socket.emitter.Emitter;
 public class volumio2Handler extends BaseThingHandler implements DiscoveryListener {
 
     private Logger logger = LoggerFactory.getLogger(volumio2Handler.class);
-    private VolumioConfig config;
+    private Volumio2Config config;
     private Volumio2Service volumio;
 
     public volumio2Handler(Thing thing) {
@@ -134,7 +134,7 @@ public class volumio2Handler extends BaseThingHandler implements DiscoveryListen
     @Override
     public void initialize() {
 
-        config = getConfigAs(VolumioConfig.class);
+        config = getConfigAs(Volumio2Config.class);
 
         try {
             volumio = new Volumio2Service(config.getHostname());
@@ -183,7 +183,7 @@ public class volumio2Handler extends BaseThingHandler implements DiscoveryListen
 
                         if (obj.getStringType("status") != null) {
                             updateState(volumio2BindingConstants.CHANNEL_PLAYER,
-                                    VolumioPlayerStatus.mapStatus(obj.getString("status")));
+                                    Volumio2PlayerStatus.mapStatus(obj.getString("status")));
                         }
 
                         if (obj.getStringType("trackType") != null) {
