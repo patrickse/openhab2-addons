@@ -1,9 +1,8 @@
 package org.openhab.binding.volumio2.internal.mapping;
 
 import org.eclipse.smarthome.core.library.types.PlayPauseType;
-import org.openhab.binding.volumio2.internal.VolumioStatus;
 
-public class VolumioPlayerStatus {
+public class Volumio2PlayerStatus {
 
     public static PlayPauseType mapStatus(String status) {
 

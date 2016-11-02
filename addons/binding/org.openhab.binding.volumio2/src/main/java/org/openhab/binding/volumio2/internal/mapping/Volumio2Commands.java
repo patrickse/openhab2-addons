@@ -6,7 +6,7 @@ package org.openhab.binding.volumio2.internal.mapping;
  * @author Patrick Sernetz <patrick@sernetz.com>
  *
  */
-public class VolumioServices {
+public class Volumio2Commands {
 
     /* Player Status */
 

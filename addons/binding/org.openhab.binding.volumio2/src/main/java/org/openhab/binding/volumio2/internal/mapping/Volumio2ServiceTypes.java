@@ -1,6 +1,6 @@
 package org.openhab.binding.volumio2.internal.mapping;
 
-public class VolumioServiceType {
+public class Volumio2ServiceTypes {
 
     public static final String WEBRADIO = "webradio";
 

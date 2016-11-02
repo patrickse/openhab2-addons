@@ -1,6 +1,6 @@
 package org.openhab.binding.volumio2.internal.config;
 
-public class VolumioConfig {
+public class Volumio2Config {
 
     private String hostname;
 
