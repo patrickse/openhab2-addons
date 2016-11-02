@@ -4,15 +4,19 @@ import org.eclipse.smarthome.core.library.types.PlayPauseType;
 
 public class Volumio2PlayerStatus {
 
+    public static final String PLAY = "play";
+
+    public static final String PAUSE = "pause";
+
     public static PlayPauseType mapStatus(String status) {
 
         PlayPauseType playPauseStatus = null;
 
         switch (status) {
-            case VolumioStatus.PLAY:
+            case PLAY:
                 playPauseStatus = PlayPauseType.PLAY;
                 break;
-            case VolumioStatus.PAUSE:
+            case PAUSE:
                 playPauseStatus = PlayPauseType.PAUSE;
                 break;
             default:

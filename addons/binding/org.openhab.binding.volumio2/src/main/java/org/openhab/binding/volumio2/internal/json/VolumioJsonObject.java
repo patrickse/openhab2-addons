@@ -83,7 +83,6 @@ public class VolumioJsonObject extends JSONObject {
         } catch (IOException e) {
             System.err.printf("Failed while reading bytes from %s: %s", url.toExternalForm(), e.getMessage());
             e.printStackTrace();
-            // Perform any other exception handling that's appropriate.
         } finally {
             if (is != null) {
                 is.close();
