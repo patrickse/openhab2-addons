@@ -2,6 +2,7 @@ package org.openhab.binding.volumio2.internal.mapping;
 
 /**
  * @see https://github.com/volumio/Volumio2-UI/blob/master/src/app/services/player.service.js
+ * @see https://github.com/volumio/Volumio2/blob/master/app/plugins/user_interface/websocket/index.js
  *
  * @author Patrick Sernetz <patrick@sernetz.com>
  *
@@ -49,6 +50,7 @@ public class Volumio2Commands {
     /* Queue */
 
     public static final String REPLACE_AND_PLAY = "replaceAndPlay";
+
     public static final String ADD_PLAY = "addPlay";
 
     /* ... */

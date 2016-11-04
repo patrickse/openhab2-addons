@@ -1,8 +1,17 @@
 package org.openhab.binding.volumio2.internal.config;
 
+/**
+ * Volumio2 Configuration objects
+ *
+ *
+ * @author Patrick Sernetz <patrick@sernetz.com>
+ *
+ */
 public class Volumio2Config {
 
     private String hostname;
+
+    /** GETTER/SETTER **/
 
     public String getHostname() {
         return hostname;

@@ -23,7 +23,7 @@ import org.eclipse.smarthome.test.storage.VolatileStorageService
 import org.junit.Before
 import org.junit.Test
 
-import org.openhab.binding.volumio2.handler.volumio2Handler
+import org.openhab.binding.volumio2.handler.Volumio2Handler
 
 
 
@@ -49,7 +49,7 @@ class volumio2OSGiTest extends OSGiTest {
 
 	@Test
 	void "creation of a volumio2Handler"() {
-		volumio2Handler handler = getService(ThingHandler,volumio2Handler)
+		volumio2Handler handler = getService(ThingHandler,Volumio2Handler)
 		assertThat handler, is(nullValue())
 	}
 

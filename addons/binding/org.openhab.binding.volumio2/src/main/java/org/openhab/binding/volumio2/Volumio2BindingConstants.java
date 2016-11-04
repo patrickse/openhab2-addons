@@ -15,12 +15,12 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
  *
  * @author Patrick Sernetz - Initial contribution
  */
-public class volumio2BindingConstants {
+public class Volumio2BindingConstants {
 
     public static final String BINDING_ID = "volumio2";
 
     // List of all Thing Type UID
-    public final static ThingTypeUID THING_TYPE_VOLUMIO2_HOST = new ThingTypeUID(BINDING_ID, "volumio2_device");
+    public final static ThingTypeUID THING_TYPE_VOLUMIO2 = new ThingTypeUID(BINDING_ID, "volumio2_thing");
 
     // List of all Channel ids
     public final static String CHANNEL_TITLE = "title";
@@ -42,5 +42,11 @@ public class volumio2BindingConstants {
     public final static String CHANNEL_RADIO_FAVOURITE = "playRadioFavourite";
 
     public final static String CHANNEL_PLAYLIST = "playPlaylist";
+
+    // Discovery Properties
+
+    public final static String DISCOVERY_SERVICE_TYPE = "_Volumio._tcp.local.";
+    public final static String DISCOVERY_NAME_PROPERTY = "volumioName";
+    public final static String DISCOVERY_UUID_PROPERTY = "UUID";
 
 }

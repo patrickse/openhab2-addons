@@ -9,7 +9,7 @@
     http://www.eclipse.org/legal/epl-v10.html
 
 -->
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="org.openhab.binding.freebox.internal.FreeboxHandlerFactory">
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="org.openhab.binding.volumio2.internal.discovery.Volumio2DiscoveryParticipant">
 
    <implementation class="org.openhab.binding.volumio2.internal.discovery.Volumio2DiscoveryParticipant"/>
 

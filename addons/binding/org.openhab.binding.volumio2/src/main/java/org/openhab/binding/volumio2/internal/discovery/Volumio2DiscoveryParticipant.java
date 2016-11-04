@@ -1,6 +1,6 @@
 package org.openhab.binding.volumio2.internal.discovery;
 
-import static org.openhab.binding.volumio2.volumio2BindingConstants.THING_TYPE_VOLUMIO2_HOST;
+import static org.openhab.binding.volumio2.Volumio2BindingConstants.*;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,50 +18,59 @@ import org.slf4j.LoggerFactory;
 
 public class Volumio2DiscoveryParticipant implements MDNSDiscoveryParticipant {
 
-    private static final Logger logger = LoggerFactory.getLogger(Volumio2DiscoveryParticipant.class);
+    private static final Logger log = LoggerFactory.getLogger(Volumio2DiscoveryParticipant.class);
 
-    private static final String SERVICE_TYPE = "_Volumio._tcp.local.";
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<ThingTypeUID> getSupportedThingTypeUIDs() {
-        return Collections.singleton(THING_TYPE_VOLUMIO2_HOST);
+        return Collections.singleton(THING_TYPE_VOLUMIO2);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getServiceType() {
-        return SERVICE_TYPE;
+        return DISCOVERY_SERVICE_TYPE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DiscoveryResult createResult(ServiceInfo service) {
 
-        logger.debug("createResult: {}", service);
+        log.debug("createResult: {}", service);
 
-        if (service.getPropertyString("UUID") != null) {
-            ThingUID uid = getThingUID(service);
+        String volumioName = service.getPropertyString(DISCOVERY_NAME_PROPERTY);
+        String uuid = service.getPropertyString(DISCOVERY_UUID_PROPERTY);
+        HashMap<String, Object> properties = new HashMap<String, Object>();
+        DiscoveryResult discoveryResult = null;
+        ThingUID thingUID = null;
 
-            HashMap<String, Object> properties = new HashMap<String, Object>();
-            properties.put("hostname", service.getServer());
-
-            String volumioName = service.getPropertyString("volumioName");
-
-            if (uid != null) {
-                DiscoveryResult discoveryResult = DiscoveryResultBuilder.create(uid).withProperties(properties)
-                        .withLabel(volumioName).build();
-                return discoveryResult;
-            } else {
-                return null;
-            }
+        if (uuid != null) {
+            thingUID = getThingUID(service);
         }
 
-        return null;
+        if (thingUID != null) {
+            properties.put("hostname", service.getServer());
+            discoveryResult = DiscoveryResultBuilder.create(thingUID).withProperties(properties).withLabel(volumioName)
+                    .build();
+        }
+
+        return discoveryResult;
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThingUID getThingUID(ServiceInfo service) {
-        logger.debug("return new ThingUID({}, {});", THING_TYPE_VOLUMIO2_HOST, service.getPropertyString("UUID"));
-        return new ThingUID(THING_TYPE_VOLUMIO2_HOST, service.getPropertyString("UUID"));
+        log.debug("return new ThingUID({}, {});", THING_TYPE_VOLUMIO2, service.getPropertyString("UUID"));
+        return new ThingUID(THING_TYPE_VOLUMIO2, service.getPropertyString("UUID"));
     }
 
 }

@@ -7,7 +7,7 @@
  */
 package org.openhab.binding.volumio2.internal;
 
-import static org.openhab.binding.volumio2.volumio2BindingConstants.THING_TYPE_VOLUMIO2_HOST;
+import static org.openhab.binding.volumio2.Volumio2BindingConstants.THING_TYPE_VOLUMIO2;
 
 import java.util.Collections;
 import java.util.Set;
@@ -16,17 +16,17 @@ import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
-import org.openhab.binding.volumio2.handler.volumio2Handler;
+import org.openhab.binding.volumio2.handler.Volumio2Handler;
 
 /**
- * The {@link volumio2HandlerFactory} is responsible for creating things and thing
+ * The {@link Volumio2HandlerFactory} is responsible for creating things and thing
  * handlers.
  *
  * @author Patrick Sernetz - Initial contribution
  */
-public class volumio2HandlerFactory extends BaseThingHandlerFactory {
+public class Volumio2HandlerFactory extends BaseThingHandlerFactory {
 
-    private final static Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_TYPE_VOLUMIO2_HOST);
+    private final static Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_TYPE_VOLUMIO2);
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
@@ -38,8 +38,8 @@ public class volumio2HandlerFactory extends BaseThingHandlerFactory {
 
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
-        if (thingTypeUID.equals(THING_TYPE_VOLUMIO2_HOST)) {
-            return new volumio2Handler(thing);
+        if (thingTypeUID.equals(THING_TYPE_VOLUMIO2)) {
+            return new Volumio2Handler(thing);
         }
 
         return null;

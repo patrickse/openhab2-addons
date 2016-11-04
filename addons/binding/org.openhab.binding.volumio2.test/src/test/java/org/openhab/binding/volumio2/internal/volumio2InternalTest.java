@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
-* Tests cases for {@link  volumio2Handler}.
+* Tests cases for {@link  Volumio2Handler}.
 *
 * @author  Patrick Sernetz - Initial contribution
 */

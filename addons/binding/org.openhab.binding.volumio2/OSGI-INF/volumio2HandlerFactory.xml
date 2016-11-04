@@ -8,9 +8,9 @@
     http://www.eclipse.org/legal/epl-v10.html
 
 -->
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="binding.volumio2">
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="org.openhab.binding.volumio2.internal.Volumio2HandlerFactory">
 
-   <implementation class="org.openhab.binding.volumio2.internal.volumio2HandlerFactory"/>
+   <implementation class="org.openhab.binding.volumio2.internal.Volumio2HandlerFactory"/>
 
    <service>
       <provide interface="org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory"/>

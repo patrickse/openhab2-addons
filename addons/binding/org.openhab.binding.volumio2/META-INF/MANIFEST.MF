@@ -7,7 +7,7 @@ Bundle-Version: 2.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,lib/socket.io-client-0.8.1.jar,lib/engine.io-client-0.8.1.jar,lib/json-20090211.jar,lib/okhttp-3.4.1.jar,lib/okhttp-ws-3.4.1.jar,lib/okio-1.9.0.jar
 Import-Package: 
- javax.jmdns;version="3.5.0",
+ javax.jmdns,
  org.eclipse.smarthome.config.core,
  org.eclipse.smarthome.config.discovery,
  org.eclipse.smarthome.core.library.items,
