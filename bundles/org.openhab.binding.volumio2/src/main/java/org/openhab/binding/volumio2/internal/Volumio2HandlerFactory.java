@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.core.audio.AudioHTTPServer;
 import org.eclipse.smarthome.core.audio.AudioSink;
 import org.eclipse.smarthome.core.net.HttpServiceUtil;
@@ -24,8 +25,10 @@ import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
+import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
 import org.openhab.binding.volumio2.handler.Volumio2Handler;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,17 +38,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Patrick Sernetz - Initial Contribution
  */
+@Component(configurationPid = "binding.volumio2", service = ThingHandlerFactory.class)
 public class Volumio2HandlerFactory extends BaseThingHandlerFactory {
 
     private static final Logger log = LoggerFactory.getLogger(Volumio2HandlerFactory.class);
 
     private final static Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_TYPE_VOLUMIO2);
-
-    private Map<String, ServiceRegistration<AudioSink>> audioSinkRegistrations = new ConcurrentHashMap<>();
-
-    private AudioHTTPServer audioHTTPServer;
-
-    private String callbackUrl;
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
@@ -56,61 +54,15 @@ public class Volumio2HandlerFactory extends BaseThingHandlerFactory {
     protected ThingHandler createHandler(Thing thing) {
 
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
-        callbackUrl = createCallbackUrl();
+        //callbackUrl = createCallbackUrl();
         if (thingTypeUID.equals(THING_TYPE_VOLUMIO2)) {
 
             // Initialize Handler
             Volumio2Handler handler = new Volumio2Handler(thing);
 
-            if (callbackUrl != null) {
-                // Volumio2AudioSink audioSink = new Volumio2AudioSink(handler, audioHTTPServer, callbackUrl);
-                // @SuppressWarnings("unchecked")
-                // ServiceRegistration<AudioSink> reg = (ServiceRegistration<AudioSink>) bundleContext
-                // .registerService(AudioSink.class.getName(), audioSink, new Hashtable<String, Object>());
-                // audioSinkRegistrations.put(thing.getUID().toString(), reg);
-            }
-
             return handler;
         }
 
         return null;
-    }
-
-    @Override
-    public void unregisterHandler(Thing thing) {
-        super.unregisterHandler(thing);
-        ServiceRegistration<AudioSink> reg = audioSinkRegistrations.get(thing.getUID().toString());
-        if (reg != null) {
-            reg.unregister();
-        }
-    }
-
-    private String createCallbackUrl() {
-        if (callbackUrl != null) {
-            return callbackUrl;
-        } else {
-            final String ipAddress = NetUtil.getLocalIpv4HostAddress();
-            if (ipAddress == null) {
-                log.warn("No network interface could be found.");
-                return null;
-            }
-
-            // we do not use SSL as it can cause certificate validation issues.
-            final int port = HttpServiceUtil.getHttpServicePort(bundleContext);
-            if (port == -1) {
-                log.warn("Cannot find port of the http service.");
-                return null;
-            }
-
-            return "http://" + ipAddress + ":" + port;
-        }
-    }
-
-    protected void setAudioHTTPServer(AudioHTTPServer audioHTTPServer) {
-        this.audioHTTPServer = audioHTTPServer;
-    }
-
-    protected void unsetAudioHTTPServer(AudioHTTPServer audioHTTPServer) {
-        this.audioHTTPServer = null;
     }
 }
