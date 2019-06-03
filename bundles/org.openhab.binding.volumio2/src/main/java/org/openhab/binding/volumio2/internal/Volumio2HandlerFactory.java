@@ -9,28 +9,18 @@
 
 package org.openhab.binding.volumio2.internal;
 
-import static org.openhab.binding.volumio2.Volumio2BindingConstants.THING_TYPE_VOLUMIO2;
-
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.smarthome.core.audio.AudioHTTPServer;
-import org.eclipse.smarthome.core.audio.AudioSink;
-import org.eclipse.smarthome.core.net.HttpServiceUtil;
-import org.eclipse.smarthome.core.net.NetUtil;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
 import org.openhab.binding.volumio2.handler.Volumio2Handler;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.Collections;
+import java.util.Set;
+
+import static org.openhab.binding.volumio2.Volumio2BindingConstants.THING_TYPE_VOLUMIO2;
 
 /**
  * The {@link Volumio2HandlerFactory} is responsible for creating things and thing
@@ -41,7 +31,7 @@ import org.slf4j.LoggerFactory;
 @Component(configurationPid = "binding.volumio2", service = ThingHandlerFactory.class)
 public class Volumio2HandlerFactory extends BaseThingHandlerFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(Volumio2HandlerFactory.class);
+//    private static final Logger log = LoggerFactory.getLogger(Volumio2HandlerFactory.class);
 
     private final static Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_TYPE_VOLUMIO2);
 

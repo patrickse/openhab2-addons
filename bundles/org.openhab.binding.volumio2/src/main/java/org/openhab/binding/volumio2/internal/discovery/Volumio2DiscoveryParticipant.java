@@ -46,7 +46,7 @@ public class Volumio2DiscoveryParticipant implements MDNSDiscoveryParticipant {
     public DiscoveryResult createResult(ServiceInfo service) {
 
         String volumioName = service.getPropertyString(DISCOVERY_NAME_PROPERTY);
-        String uuid = service.getPropertyString(DISCOVERY_UUID_PROPERTY);
+//        String uuid = service.getPropertyString(DISCOVERY_UUID_PROPERTY);
         HashMap<String, Object> properties = new HashMap<String, Object>();
         DiscoveryResult discoveryResult = null;
         ThingUID thingUID = null;
