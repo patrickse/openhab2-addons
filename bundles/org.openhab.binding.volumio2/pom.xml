@@ -22,21 +22,25 @@
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20180813</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
       <version>3.12.1</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.squareup.okio</groupId>
       <artifactId>okio</artifactId>
       <version>1.15.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.socket</groupId>
       <artifactId>socket.io-client</artifactId>
       <version>1.0.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.socket</groupId>

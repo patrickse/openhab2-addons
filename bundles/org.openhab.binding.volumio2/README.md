@@ -62,3 +62,8 @@ Audio Support is still experimental in this binding.
 ## Full Example
 
 No example atm
+
+## Dev Notes
+
+1. Compile to kar file `mvn clean install karaf:kar -DskipChecks`
+2. Install to openhab through console `kar:install org.openhab.binding.volumio2-2.5.0-SNAPSHOT.kar`
