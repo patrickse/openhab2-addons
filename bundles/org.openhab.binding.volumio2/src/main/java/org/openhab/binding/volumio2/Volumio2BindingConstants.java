@@ -13,6 +13,7 @@
 
 package org.openhab.binding.volumio2;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 
 /**
@@ -21,6 +22,7 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
  *
  * @author Patrick Sernetz - Initial Contribution
  */
+@NonNullByDefault
 public class Volumio2BindingConstants {
 
     public static final String BINDING_ID = "volumio2";

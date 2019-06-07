@@ -16,8 +16,10 @@ package org.openhab.binding.volumio2.handler;
 import static org.openhab.binding.volumio2.Volumio2BindingConstants.*;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.core.library.types.NextPreviousType;
 import org.eclipse.smarthome.core.library.types.OnOffType;
 import org.eclipse.smarthome.core.library.types.PercentType;
@@ -51,32 +53,53 @@ import io.socket.emitter.Emitter;
  *
  * @author Patrick Sernetz - Initial Contribution
  */
+@NonNullByDefault
 public class Volumio2Handler extends BaseThingHandler {
 
-    private static Logger log = LoggerFactory.getLogger(Volumio2Handler.class);
-    private Volumio2Service volumio;
-    private Volumio2Data state = new Volumio2Data();
-
-    public Volumio2Service getVolumio() {
-        return volumio;
-    }
+    private Logger logger = LoggerFactory.getLogger(Volumio2Handler.class);
+    private final Volumio2Service volumio = new Volumio2Service();
+    private final Volumio2Data state = new Volumio2Data();
 
     public Volumio2Handler(Thing thing) {
         super(thing);
+
+        String hostname = (String) getThing().getConfiguration().get(CONFIG_PROPERTY_HOSTNAME);
+        int port = ((BigDecimal) getThing().getConfiguration().get(CONFIG_PROPERTY_PORT)).intValueExact();
+        String protocol = (String) getThing().getConfiguration().get(CONFIG_PROPERTY_PROTOCOL);
+        int timeout = ((BigDecimal) getThing().getConfiguration().get(CONFIG_PROPERTY_TIMEOUT)).intValueExact();
+
+        if (Objects.isNull(hostname)) {
+
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+                         "Configuration incomplete, missing hostname");
+
+        } else if (Objects.isNull(protocol)) {
+
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+                         "Configuration incomplete, missing protocol");
+
+        } else {
+
+            logger.debug("Trying to connect to Volumio2 on {}://{}:{}", protocol, hostname, port);
+            try {
+                volumio.connect(protocol, hostname, port, timeout);
+
+                clearChannels();
+                bindDefaultListener();
+                updateStatus(ThingStatus.OFFLINE);
+                volumio.connect();
+
+            } catch (Exception e) {
+                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, e.getMessage());
+            }
+
+        }
     }
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
 
-        log.debug("channelUID: {}", channelUID);
-
-        if (volumio == null) {
-            log.debug("Ignoring command " + channelUID.getId() + " = " + command + " because device is offline.");
-            if (ThingStatus.ONLINE.equals(getThing().getStatus())) {
-                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, "device is offline");
-            }
-            return;
-        }
+        logger.debug("channelUID: {}", channelUID);
 
         try {
             switch (channelUID.getId()) {
@@ -152,7 +175,7 @@ public class Volumio2Handler extends BaseThingHandler {
                     }
                     break;
                 case "REFRESH":
-                    log.debug("Called Refresh");
+                    logger.debug("Called Refresh");
                     volumio.getState();
                     break;
                 case CHANNEL_SYSTEMCOMMAND:
@@ -172,7 +195,7 @@ public class Volumio2Handler extends BaseThingHandler {
                     }
                     break;
                 default:
-                    log.error("Unknown channel: {}", channelUID.getId());
+                    logger.error("Unknown channel: {}", channelUID.getId());
             }
 
         } catch (Exception e) {
@@ -206,7 +229,7 @@ public class Volumio2Handler extends BaseThingHandler {
         } else if (command instanceof RefreshType) {
             volumio.getState();
         } else {
-            log.error("Command is not handled");
+            logger.error("Command is not handled");
         }
 
     }
@@ -252,17 +275,17 @@ public class Volumio2Handler extends BaseThingHandler {
 
             switch (fastforwardType) {
                 case FASTFORWARD:
-                    log.warn("Not implemented yet");
+                    logger.warn("Not implemented yet");
                     break;
                 case REWIND:
-                    log.warn("Not implemented yet");
+                    logger.warn("Not implemented yet");
                     break;
             }
 
         } else if (command instanceof RefreshType) {
             volumio.getState();
         } else {
-            log.error("Command is not handled: {}", command);
+            logger.error("Command is not handled: {}", command);
         }
 
     }
@@ -285,70 +308,64 @@ public class Volumio2Handler extends BaseThingHandler {
      * Read the configuration and connect to volumio device. The Volumio impl. is
      * async so it should not block the process in any way.
      */
-    @Override
-    public void initialize() {
-
-        String hostname = (String) getThing().getConfiguration().get(CONFIG_PROPERTY_HOSTNAME);
-        int port = ((BigDecimal) getThing().getConfiguration().get(CONFIG_PROPERTY_PORT)).intValueExact();
-        String protocol = (String) getThing().getConfiguration().get(CONFIG_PROPERTY_PROTOCOL);
-        int timeout = ((BigDecimal) getThing().getConfiguration().get(CONFIG_PROPERTY_TIMEOUT)).intValueExact();
-
-        if (hostname == null) {
-
-            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
-                    "Configuration incomplete, missing hostname");
-
-        } else if (protocol == null) {
-
-            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
-                    "Configuration incomplete, missing protocol");
-
-        } else {
-
-            log.debug("Trying to connect to Volumio2 on {}://{}:{}", protocol, hostname, port);
-            try {
-                volumio = new Volumio2Service(protocol, hostname, port, timeout);
-
-                clearChannels();
-                bindDefaultListener();
-                updateStatus(ThingStatus.OFFLINE);
-                volumio.connect();
-
-            } catch (Exception e) {
-                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, e.getMessage());
-            }
-
-        }
-
-    }
+//    @Override
+//    public void initialize() {
+//
+//        String hostname = (String) getThing().getConfiguration().get(CONFIG_PROPERTY_HOSTNAME);
+//        int port = ((BigDecimal) getThing().getConfiguration().get(CONFIG_PROPERTY_PORT)).intValueExact();
+//        String protocol = (String) getThing().getConfiguration().get(CONFIG_PROPERTY_PROTOCOL);
+//        int timeout = ((BigDecimal) getThing().getConfiguration().get(CONFIG_PROPERTY_TIMEOUT)).intValueExact();
+//
+//        if (hostname == null) {
+//
+//            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+//                    "Configuration incomplete, missing hostname");
+//
+//        } else if (protocol == null) {
+//
+//            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+//                    "Configuration incomplete, missing protocol");
+//
+//        } else {
+//
+//            logger.debug("Trying to connect to Volumio2 on {}://{}:{}", protocol, hostname, port);
+//            try {
+//                volumio = new Volumio2Service(protocol, hostname, port, timeout);
+//
+//                clearChannels();
+//                bindDefaultListener();
+//                updateStatus(ThingStatus.OFFLINE);
+//                volumio.connect();
+//
+//            } catch (Exception e) {
+//                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, e.getMessage());
+//            }
+//
+//        }
+//
+//    }
 
     @Override
     public void dispose() {
-        if (volumio != null) {
-            scheduler.schedule(new Runnable() {
-                @Override
-                public void run() {
-                    if (volumio.isConnected()) {
-                        log.warn("Timeout during disconnect event");
-                    } else {
-                        volumio.close();
-                    }
-                    clearChannels();
-                }
-            }, 30, TimeUnit.SECONDS);
+        scheduler.schedule(() -> {
+            if (volumio.isConnected()) {
+                logger.warn("Timeout during disconnect event");
+            } else {
+                volumio.close();
+            }
+            clearChannels();
+        }, 30, TimeUnit.SECONDS);
 
-            volumio.disconnect();
-
-        }
+        volumio.disconnect();
     }
 
     public void playURI(StringType url) {
-        log.debug("Play uri sound: {}", url.toFullString());
+        logger.debug("Play uri sound: {}", url.toFullString());
         this.volumio.playURI(url.toFullString());
     }
 
     public void playNotificationSoundURI(StringType url) {
-        log.debug("Play notification sound: {}", url.toFullString());
+        logger.debug("Play notification sound: {}", url.toFullString());
     }
 
     /** Listener **/
@@ -360,14 +377,7 @@ public class Volumio2Handler extends BaseThingHandler {
      * @return
      */
     private Emitter.Listener connectListener() {
-        return new Emitter.Listener() {
-
-            @Override
-            public void call(Object... arg0) {
-                updateStatus(ThingStatus.ONLINE);
-            }
-
-        };
+        return arg0 -> updateStatus(ThingStatus.ONLINE);
     }
 
     /**
@@ -377,14 +387,7 @@ public class Volumio2Handler extends BaseThingHandler {
      * @return
      */
     private Emitter.Listener disconnectListener() {
-        return new Emitter.Listener() {
-
-            @Override
-            public void call(Object... arg0) {
-                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR);
-            }
-
-        };
+        return arg0 -> updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR);
     }
 
     /**
@@ -394,59 +397,55 @@ public class Volumio2Handler extends BaseThingHandler {
      * @return
      */
     private Emitter.Listener pushStateListener() {
-        return new Emitter.Listener() {
+        return data -> {
 
-            @Override
-            public void call(Object... data) {
+            try {
 
-                try {
+                JSONObject jsonObject = (JSONObject) data[0];
+                logger.debug(jsonObject.toString());
+                state.update(jsonObject);
 
-                    JSONObject jsonObject = (JSONObject) data[0];
-                    log.debug(jsonObject.toString());
-                    state.update(jsonObject);
-
-                    if (isLinked(CHANNEL_TITLE) && state.isTitleDirty()) {
-                        updateState(CHANNEL_TITLE, state.getTitle());
-                    }
-
-                    if (isLinked(CHANNEL_ARTIST) && state.isArtistDirty()) {
-                        updateState(CHANNEL_ARTIST, state.getArtist());
-                    }
-
-                    if (isLinked(CHANNEL_ALBUM) && state.isAlbumDirty()) {
-                        updateState(CHANNEL_ALBUM, state.getAlbum());
-                    }
-
-                    if (isLinked(CHANNEL_VOLUME) && state.isVolumeDirty()) {
-                        updateState(CHANNEL_VOLUME, state.getVolume());
-                    }
-
-                    if (isLinked(CHANNEL_PLAYER) && state.isStateDirty()) {
-                        updateState(CHANNEL_PLAYER, state.getState());
-                    }
-
-                    if (isLinked(CHANNEL_TRACK_TYPE) && state.isTrackTypeDirty()) {
-                        updateState(CHANNEL_TRACK_TYPE, state.getTrackType());
-                    }
-
-                    if (isLinked(CHANNEL_PLAY_RANDOM) && state.isRandomDirty()) {
-                        updateState(CHANNEL_PLAY_RANDOM, state.getRandom());
-                    }
-
-                    if (isLinked(CHANNEL_PLAY_REPEAT) && state.isRepeatDirty()) {
-                        updateState(CHANNEL_PLAY_REPEAT, state.getRepeat());
-                    }
-
-                    /**
-                     * if (isLinked(CHANNEL_COVER_ART) && state.isCoverArtDirty()) {
-                     * updateState(CHANNEL_COVER_ART, state.getCoverArt());
-                     * }
-                     */
-
-                } catch (JSONException e) {
-                    log.error("Could not refresh channel", e);
-
+                if (isLinked(CHANNEL_TITLE) && state.isTitleDirty()) {
+                    updateState(CHANNEL_TITLE, state.getTitle());
                 }
+
+                if (isLinked(CHANNEL_ARTIST) && state.isArtistDirty()) {
+                    updateState(CHANNEL_ARTIST, state.getArtist());
+                }
+
+                if (isLinked(CHANNEL_ALBUM) && state.isAlbumDirty()) {
+                    updateState(CHANNEL_ALBUM, state.getAlbum());
+                }
+
+                if (isLinked(CHANNEL_VOLUME) && state.isVolumeDirty()) {
+                    updateState(CHANNEL_VOLUME, state.getVolume());
+                }
+
+                if (isLinked(CHANNEL_PLAYER) && state.isStateDirty()) {
+                    updateState(CHANNEL_PLAYER, state.getState());
+                }
+
+                if (isLinked(CHANNEL_TRACK_TYPE) && state.isTrackTypeDirty()) {
+                    updateState(CHANNEL_TRACK_TYPE, state.getTrackType());
+                }
+
+                if (isLinked(CHANNEL_PLAY_RANDOM) && state.isRandomDirty()) {
+                    updateState(CHANNEL_PLAY_RANDOM, state.getRandom());
+                }
+
+                if (isLinked(CHANNEL_PLAY_REPEAT) && state.isRepeatDirty()) {
+                    updateState(CHANNEL_PLAY_REPEAT, state.getRepeat());
+                }
+
+                /**
+                 * if (isLinked(CHANNEL_COVER_ART) && state.isCoverArtDirty()) {
+                 * updateState(CHANNEL_COVER_ART, state.getCoverArt());
+                 * }
+                 */
+
+            } catch (JSONException e) {
+                logger.error("Could not refresh channel", e);
+
             }
         };
     }

@@ -39,9 +39,16 @@ public class Volumio2Service {
     private Socket socket;
     private boolean connected;
 
+    public Volumio2Service() {
+
+    }
+
     public Volumio2Service(String protocol, String hostname, int port, int timeout)
             throws URISyntaxException, UnknownHostException {
+        connect(protocol, hostname, port, timeout);
+    }
 
+    public void connect(String protocol, String hostname, int port, int timeout) throws UnknownHostException, URISyntaxException {
         String uriString = String.format("%s://%s:%d", protocol, hostname, port);
 
         URI destUri = new URI(uriString);

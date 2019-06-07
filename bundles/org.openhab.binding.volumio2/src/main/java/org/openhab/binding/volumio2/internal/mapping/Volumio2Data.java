@@ -35,8 +35,6 @@ import org.slf4j.LoggerFactory;
  */
 public class Volumio2Data {
 
-    private static final Logger log = LoggerFactory.getLogger(Volumio2Data.class);
-
     private String title = "";
     private boolean titleDirty;
 
@@ -263,15 +261,15 @@ public class Volumio2Data {
 
     public RawType getCoverArt() {
         if (coverArt == null) {
-            return new RawType();
+            return new RawType(new byte[0], "application/octet-stream");
         } else {
-            return new RawType(coverArt);
+            return new RawType(coverArt, "application/octet-stream");
         }
 
     }
 
     public OnOffType getRandom() {
-        return (random == true) ? OnOffType.ON : OnOffType.OFF;
+        return (random) ? OnOffType.ON : OnOffType.OFF;
     }
 
     public void setRandom(boolean val) {
@@ -284,7 +282,7 @@ public class Volumio2Data {
     }
 
     public OnOffType getRepeat() {
-        return (repeat == true) ? OnOffType.ON : OnOffType.OFF;
+        return (repeat) ? OnOffType.ON : OnOffType.OFF;
     }
 
     public void setRepeat(boolean val) {

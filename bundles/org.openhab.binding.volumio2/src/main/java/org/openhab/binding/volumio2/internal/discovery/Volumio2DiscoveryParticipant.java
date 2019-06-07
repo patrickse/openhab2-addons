@@ -52,29 +52,28 @@ public class Volumio2DiscoveryParticipant implements MDNSDiscoveryParticipant {
 
     @Override
     public DiscoveryResult createResult(ServiceInfo service) {
-
         ThingUID thingUID = getThingUID(service);
 
-        if (Objects.nonNull(thingUID)) {
-            if (
-                    Objects.nonNull(service.getHostAddresses()) &&
-                    service.getHostAddresses().length > 0 &&
-                    !service.getHostAddresses()[0].isEmpty()
-            ) {
-                log.debug("Discoverd Volumio2 Device: {}", service);
+        if (
+            Objects.nonNull(thingUID) &&
+            Objects.nonNull(service.getHostAddresses()) &&
+            service.getHostAddresses().length > 0 &&
+            !service.getHostAddresses()[0].isEmpty()
+        ) {
+            log.debug("Discoverd Volumio2 Device: {}", service);
 
-                Map<String, Object> properties = new HashMap<>(4);
-                properties.put("hostname", service.getServer());
-                properties.put("port", service.getPort());
-                properties.put("protocol", "http");
+            Map<String, Object> properties = new HashMap<>(4);
+            properties.put("hostname", service.getServer());
+            properties.put("port", service.getPort());
+            properties.put("protocol", "http");
 
-                return DiscoveryResultBuilder
-                        .create(thingUID)
-                        .withProperties(properties)
-                        .withLabel(thingUID.getId())
-                        .build();
-            }
+            return DiscoveryResultBuilder
+                    .create(thingUID)
+                    .withProperties(properties)
+                    .withLabel(thingUID.getId())
+                    .build();
         }
+
 
         /**
         String volumioName = service.getPropertyString(DISCOVERY_NAME_PROPERTY);
